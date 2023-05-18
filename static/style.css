@@ -1,0 +1,31 @@
+.grid-container {
+    display: grid;
+    grid-template-areas:
+      'ph ph ph ph ph'
+      'ln cn cn cn cn'
+      'pf pf pf pf pf';
+  }
+  
+  header {
+    grid-area: ph;
+    padding:20px 10px;
+    background-image: url('bike.png');
+  }
+  
+  .heading { font-family:sans-serif; font-size:x-large; }
+  .search { float:right }
+  
+  nav {
+    grid-area: ln;
+  }
+  
+  main {
+    grid-area: cn;
+  }
+  
+  footer {
+    grid-area: pf;
+  }
+  
+  #mapid { height: 500px; }
+  

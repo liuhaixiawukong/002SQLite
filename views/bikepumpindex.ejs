@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>  
+  <%- include("_head.ejs"); %>
+  <body>
+    <div class="grid-container">      
+    <%- include("_header.ejs"); %>
+    <%- include("_nav.ejs"); %>
+      <main>
+        <div class="w3-bar w3-green">
+          <button id="bike-tool-station" class="w3-bar-item w3-button w3-ripple"
+          onclick="location.href='?type=Bike Tool Station';">Bike Tool Station</button>
+          <button id="on-street-bike-pump" class="w3-bar-item w3-button w3-ripple"
+          onclick="location.href='?type=On street bike pump';">On street bike pump</button>
+          <button id="bike-pump-and-tool-station" class="w3-bar-item w3-button w3-ripple"
+          onclick="location.href='?type=Bike Pump %26 Tool Station';">Bike Pump &amp; Tool Station</button>
+        </div>
+        <table class="w3-table w3-striped w3-border">
+          <thead>
+            <tr><th>Type</th><th>Name</th><th>Maintained by</th></tr>
+          </thead>
+          <tbody>
+            <% for (var i=0; i<rows.length; i++) { %>
+            <tr>
+              <td><%= rows[i].type %></td>
+              <td><%= rows[i].name %></td>
+              <td><%= rows[i].maintained %></td>              
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </main>
+    </div>
+  </body>
+</html>

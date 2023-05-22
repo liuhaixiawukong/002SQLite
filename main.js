@@ -14,23 +14,18 @@ app.set("view engine", "ejs");
 app.use(express.static('static'));
 
 //Groupwork of all members:
-//Import the MySQL module:
-const mysql = require('mysql');
 
-//Create a connection object with the database credentials​
-var connection = mysql.createConnection({
-   "host"     : "localhost",
-   "user"     : "root",
-   "password" : "password",
-   "database" : "isd"
+//Import the SQLite:
+const sqlite3 = require("sqlite3").verbose();
+
+const db_name = path.join(__dirname, "db", "bikepump.db");
+const db = new sqlite3.Database(db_name, err => {
+  if (err) {
+    return console.error(err.message);
+  }
+  console.log("Connected to 'bikepump.db'");
 });
-connection.connect(function(err){
-	if (err) {
-    	console.error("Connection error: ", err.message);    
-	} else {
-    	console.log("Connected as: ", connection.threadId);    
-	}
-});
+
 //end Groupwork for all members.
 
 //beging FR1.1 and FR1.2. Implemented by Haixia Liu:
@@ -50,13 +45,13 @@ function splash(request, response) {
 function splashbikepum(request, response) {          
     // if no type is specified use QUERY1
     if (typeof request.query.type == 'undefined') {
-        connection.query(QUERY1, function (err, rows, fields) {
+        db.all(QUERY1, function (err, rows, fields) {
             if (err) internalServerError(response, err);
             else response.render("bikepumpindex", { 'rows': rows});
         });
     }
     else { // QUERY2 selects matching type
-        connection.query(QUERY2, [request.query.type], function (err, rows, fields) {
+        db.all(QUERY2, [request.query.type], function (err, rows, fields) {
             if (err) internalServerError(response, err);
             else response.render("bikepumpindex", { 'rows': rows, "type": request.query.type });
         });

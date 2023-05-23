@@ -1,4 +1,16 @@
-<nav>  
+<nav> 
+        <% if (typeof type == 'undefined') { %>
+
+            <button id="find-on-map" onclick="getLocation(loadMap,null)"
+            class="w3-button w3-block w3-blue w3-border w3-border-white">BikePump on map</button>
+       
+            <% } else { %>
+       
+           <button id="find-on-map" onclick="getLocation(loadMap, '<%= encodeURIComponent(type) %>')" 
+               class="w3-button w3-block w3-blue w3-border w3-border-white">BikePump on map</button>
+       
+            <% } %>
+
     <button id="btnHome" onclick="location.href='/';"  
      class="w3-button w3-block w3-blue w3-border w3-border-white">Home</button>
 

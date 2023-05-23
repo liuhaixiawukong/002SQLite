@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<%- include("_head.ejs"); %>
+
+  <body>
+    <div class="grid-container">
+      <%- include("_header.ejs"); %>
+        <%- include("_nav.ejs"); %>
+          <main>
+            <div id="mapid"></div>
+            <script>
+              const MAP_ZOOM = 16;
+
+              // initialise map. See https://leafletjs.com
+              // set the map size in CSS
+              var map = L.map('mapid');
+              //var lat=51.454514;
+              //var lon= -2.587910;
+              map.setView([<%= lat %>, <%= lon %>], MAP_ZOOM);
+              //map.setView([51.454514, -2.587910], MAP_ZOOM);
+              L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              }).addTo(map);
+
+              var marker;
+              <% for (var i = 0; i < rows.length; i++) { %>
+                // var jsonStr = '<%= rows[i].geo_point_2d %>';
+                // console.log(jsonStr);
+                // //const will cause error: due to we are looping
+                // var replacedJsonStr = jsonStr.replace(/&#34;/g, '"');
+                // var parsedJson = JSON.parse(replacedJsonStr);
+                // console.log(parsedJson);
+                // var lat = parsedJson.lat;
+                // var lon = parsedJson.lon;
+                // Create a marker with the latitude and longitude values
+                // marker = L.marker([lat, lon]);
+                marker = L.marker([<%= rows[i].geo_point_2d %> ]);
+
+                // Add the marker to the map
+                marker.addTo(map);
+                marker.bindPopup("<%= rows[i].name %>");
+              
+              <% } %>
+
+            </script>
+            <input type="hidden" id="markerCount" value="<%= rows.length %>">
+          </main>
+    </div>
+  </body>
+</html>

@@ -53,7 +53,9 @@ function splashbikepum(request, response) {
     if (typeof request.query.type == 'undefined') {
         db.all(QUERY1, function (err, rows, fields) {
             if (err) internalServerError(response, err);
-            else{ console.log(rows);
+            else{ 
+              
+            // console.log(rows);
 
             response.render("bikepumpindex", { 'rows': rows});
             }
@@ -64,7 +66,7 @@ function splashbikepum(request, response) {
         db.all(QUERY2, [request.query.type], function (err, rows, fields) {
             if (err) internalServerError(response, err);
             else {
-              console.log(rows);
+            // console.log(rows);
             response.render("bikepumpindex", { 'rows': rows, "type": request.query.type });
           }
         });
@@ -77,7 +79,8 @@ function splashtypepartialmatching(request, response) {
   db.all(QUERY3, ["%" + request.query.searchbytype + "%"], function (err, rows, fields) {
       if (err) internalServerError(response, err);
       else {
-              console.log(rows);response.render("bikepumpindex", { 'rows': rows });
+              // console.log(rows);
+              response.render("bikepumpindex", { 'rows': rows });
       }
   });
 }
@@ -92,7 +95,24 @@ app.get("/bikepumpindex", splashbikepum);
 app.get("/searchbikepumptxtbox", splashtypepartialmatching);
 //end read-search by type
 
+//begin map
+app.get("/map.html", function (request, response) {
+  var lat = request.query.lat, lon = request.query.lon;
+  if (typeof request.query.type == 'undefined') {
+    db.all(QUERY1, function (err, rows, fields) {
+          if (err) internalServerError(response, err);
+          else response.render("map", { 'rows': rows, 'lat':lat, 'lon':lon });
+      });
+  }
+  else {
+    db.all(QUERY2, [request.query.type], function (err, rows, fields) {
+          if (err) internalServerError(response, err)
+          else response.render("map", { 'rows': rows, "type": request.query.type, 'lat':lat, 'lon':lon });
+      });
+  }
+});
 
+//end map
 
 app.listen(5000, function() {
    console.log('Node.js web server at port 5000 is running.. ');

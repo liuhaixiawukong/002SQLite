@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <%- include("_head.ejs"); %>
+  <body>
+    <div class="grid-container">
+      <%- include("_header.ejs"); %>
+      <%- include("_nav.ejs"); %>
+      <main>
+        <!-- request.query.search -->
+        <table class="w3-table w3-striped w3-border">
+          <thead>
+            <tr><th>Type</th><th>Name</th><th>Maintained by</th></tr>
+          </thead>
+          <tbody>
+            <% for (var i=0; i<rows.length; i++) { %>
+            <tr>
+              <td><%= rows[i].TYPE %></td>
+              <td><%= rows[i].NAME %></td>
+              <td><%= rows[i].MAINTAINED %></td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </main>
+    </div>
+  </body>
+</html>
+

@@ -1,3 +1,5 @@
+const path = require('path');
+
 var express = require('express');
 var app = express();
 
@@ -30,7 +32,11 @@ const db = new sqlite3.Database(db_name, err => {
 
 //beging FR1.1 and FR1.2. Implemented by Haixia Liu:
 const QUERY1 = "SELECT * FROM `public-bike-pumps`";
-const QUERY2 = "SELECT * FROM `public-bike-pumps` Where Type = ?";
+const QUERY2 = "SELECT * FROM `public-bike-pumps` Where TYPE = ?";
+
+//for read-search by type
+const QUERY3 = "SELECT * FROM `public-bike-pumps` WHERE TYPE LIKE ?";
+
 
 // callback function for the splash page request handler
 function splash(request, response) {
@@ -47,21 +53,46 @@ function splashbikepum(request, response) {
     if (typeof request.query.type == 'undefined') {
         db.all(QUERY1, function (err, rows, fields) {
             if (err) internalServerError(response, err);
-            else response.render("bikepumpindex", { 'rows': rows});
+            else{ console.log(rows);
+
+            response.render("bikepumpindex", { 'rows': rows});
+            }
+
         });
     }
     else { // QUERY2 selects matching type
         db.all(QUERY2, [request.query.type], function (err, rows, fields) {
             if (err) internalServerError(response, err);
-            else response.render("bikepumpindex", { 'rows': rows, "type": request.query.type });
+            else {
+              console.log(rows);
+            response.render("bikepumpindex", { 'rows': rows, "type": request.query.type });
+          }
         });
     }
+}
+
+// read/search by bike pump type txt partial matching
+function splashtypepartialmatching(request, response) {          
+ // QUERY3 selects matching type
+  db.all(QUERY3, ["%" + request.query.searchbytype + "%"], function (err, rows, fields) {
+      if (err) internalServerError(response, err);
+      else {
+              console.log(rows);response.render("bikepumpindex", { 'rows': rows });
+      }
+  });
 }
 
 // Splash page (index.html) is served by default
 app.get("/", splash);
 app.get("/bikepumpindex", splashbikepum);
 //end FR1.1 and FR1.2. Implemented by Haixia Liu.
+
+
+//begin read-search by type partial matching
+app.get("/searchbikepumptxtbox", splashtypepartialmatching);
+//end read-search by type
+
+
 
 app.listen(5000, function() {
    console.log('Node.js web server at port 5000 is running.. ');
